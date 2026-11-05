@@ -1,0 +1,33 @@
+<article class="character-card">
+    <div class="character-card__body">
+        <p class="character-card__eyebrow">Informações do personagem</p>
+        <h2>@Character.Name</h2>
+        <dl>
+            <div>
+                <dt>Idade</dt>
+                <dd>@(Character.Age?.ToString() ?? "Desconhecida")</dd>
+            </div>
+            <div>
+                <dt>Raça</dt>
+                <dd>@Character.Race</dd>
+            </div>
+            @if (!string.IsNullOrWhiteSpace(Character.Quote))
+            {
+                <div>
+                    <dt>Citação</dt>
+                    <dd>
+                        <blockquote>“@Character.Quote”</blockquote>
+                    </dd>
+                </div>
+            }
+        </dl>
+    </div>
+    <div class="character-card__image">
+        <img src="@Character.Image" alt="Ilustração de @Character.Name" loading="lazy" />
+    </div>
+</article>
+
+@code {
+    [Parameter, EditorRequired]
+    public Character Character { get; set; } = default!;
+}

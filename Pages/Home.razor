@@ -1,0 +1,52 @@
+@page "/"
+
+<PageTitle>Demon Slayer - Personagens</PageTitle>
+
+@if (isLoading)
+{
+    <p class="state">Carregando personagens...</p>
+}
+else if (errorMessage is not null)
+{
+    <p class="state state--error">@errorMessage</p>
+}
+else if (characters.Count == 0)
+{
+    <p class="state">Nenhum personagem encontrado.</p>
+}
+else
+{
+    <div class="character-picker">
+        <select id="character-select" @bind="selectedCharacterId">
+            @foreach (var character in characters)
+            {
+                <option value="@character.Id">@character.Name</option>
+            }
+        </select>
+    </div>
+
+    @if (SelectedCharacter is { } selectedCharacter)
+    {
+        <CharacterCard Character="selectedCharacter" />
+    }
+
+    @if (featuredCharacters.Count > 0)
+    {
+        <section class="character-shortcuts" aria-labelledby="character-shortcuts-title">
+            <h2 id="character-shortcuts-title">Mais personagens</h2>
+            <div class="character-shortcuts__grid">
+                @foreach (var character in featuredCharacters)
+                {
+                    <button class="character-shortcut"
+                            type="button"
+                            aria-label="Ver @character.Name"
+                            aria-pressed="@(selectedCharacterId == character.Id)"
+                            @onclick="() => SelectCharacter(character.Id)">
+                        <img src="@character.Image" alt="" loading="lazy" />
+                        <span>@character.Name</span>
+                    </button>
+                }
+            </div>
+        </section>
+    }
+}
